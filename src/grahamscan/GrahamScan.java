@@ -137,7 +137,9 @@ public class GrahamScan {
         if(points.size() < 3) {
             throw new IllegalArgumentException("Convex hull calculation requires at least 3 unique points");
         }
-
+        if(this.areAllCollinear()) {
+            throw new IllegalArgumentException("Convex hull calculation requires at least one point not to be collinear");
+        }
         Stack<Point> stack = new Stack<Point>();
         stack.push(points.get(0));
         stack.push(points.get(1));
@@ -168,5 +170,15 @@ public class GrahamScan {
 
         points = new ArrayList<Point>(stack);
     }
-
+    protected boolean areAllCollinear() {
+        final Point p1 = this.points.get(0);
+        final Point p2 = this.points.get(1);
+        for(int i = 2; i < points.size(); i++) {
+            Point p3 = this.points.get(i);
+            if(this.getTurn(p1, p2, p3) != Turn.COLLINEAR) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
