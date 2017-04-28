@@ -157,5 +157,31 @@ public class GrahamScanTest {
         List<Point> expectedVal = Arrays.asList(f, i, d, a, f);
         assertEquals(expectedVal, retVal);
     }
-
+    @Test
+    public void testGetConvexHullAllCollinear() {
+        /**
+         * 9
+         * 8 
+         * 7
+         * 6
+         * 5         d
+         * 4       c
+         * 3     b
+         * 2   a
+         * 1
+         * 0 1 2 3 4 5 6 7 8 9
+         * 
+         */
+        Point a = new Point(2, 2);
+        Point b = new Point(3, 3);
+        Point c = new Point(4, 4);
+        Point d = new Point(5, 5);
+        GrahamScan scan = new GrahamScan(Arrays.asList(a, b, c, d));
+        try {
+            scan.getConvexHull();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException IllegalArgumentException) {
+            assertEquals("Convex hull calculation requires at least one point not to be collinear", IllegalArgumentException.getMessage());
+        }
+    }
 }
